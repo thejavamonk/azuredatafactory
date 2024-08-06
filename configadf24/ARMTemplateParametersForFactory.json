@@ -1,0 +1,27 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "configadf24"
+		},
+		"ls_azure_sql_password": {
+			"value": ""
+		},
+		"ls_dev_akv_properties_typeProperties_baseUrl": {
+			"value": "https://dev-akv-202408.vault.azure.net/"
+		},
+		"ls_azure_sql_properties_typeProperties_server": {
+			"value": "devsqlserver202408.database.windows.net"
+		},
+		"ls_azure_sql_properties_typeProperties_database": {
+			"value": "dev-db"
+		},
+		"ls_azure_sql_properties_typeProperties_userName": {
+			"value": "sqladmin"
+		},
+		"ls_adls_configadf24_properties_typeProperties_url": {
+			"value": "https://sadev2024.dfs.core.windows.net/"
+		}
+	}
+}
