@@ -3,84 +3,11 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "extract_from_sqldb",
-				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "get_task_parameters",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "AzureSqlSource",
-						"sqlReaderQuery": {
-							"value": "@concat(activity('get_task_parameters').output.firstRow.src_sql, ' where ModifiedDate > ', '''', activity('get_last_run_date').output.firstRow.last_run_date, '''')",
-							"type": "Expression"
-						},
-						"queryTimeout": "02:00:00",
-						"partitionOption": "None"
-					},
-					"sink": {
-						"type": "DelimitedTextSink",
-						"storeSettings": {
-							"type": "AzureBlobFSWriteSettings"
-						},
-						"formatSettings": {
-							"type": "DelimitedTextWriteSettings",
-							"quoteAllText": true,
-							"fileExtension": ".txt"
-						}
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "ds_generic_azure_sqldb",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "ds_generic_adls_csv",
-						"type": "DatasetReference",
-						"parameters": {
-							"p_target_folder": {
-								"value": "@activity('get_task_parameters').output.firstRow.tgt_folder",
-								"type": "Expression"
-							},
-							"p_target_filename": {
-								"value": "@activity('get_task_parameters').output.firstRow.tgt_filename",
-								"type": "Expression"
-							}
-						}
-					}
-				]
-			},
-			{
 				"name": "get_task_parameters",
 				"type": "Lookup",
 				"dependsOn": [
 					{
-						"activity": "get_last_run_date",
+						"activity": "update_control_table_to_running",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -126,7 +53,7 @@
 							},
 							"task_sequence": {
 								"type": "Int32",
-								"value": "1"
+								"value": "2"
 							}
 						},
 						"queryTimeout": "02:00:00",
@@ -166,11 +93,11 @@
 							"type": "String"
 						},
 						"job_status": {
-							"value": null,
+							"value": "",
 							"type": "String"
 						},
 						"status_description": {
-							"value": "Running Extract",
+							"value": "Running load to staging task",
 							"type": "String"
 						},
 						"task": {
@@ -188,7 +115,7 @@
 							"type": "String"
 						},
 						"task_sequence": {
-							"value": "1",
+							"value": "2",
 							"type": "Int32"
 						},
 						"task_status": {
@@ -207,7 +134,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "update_last_run_date",
+						"activity": "update_control_table_to_success",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -240,7 +167,7 @@
 							"type": "String"
 						},
 						"status_description": {
-							"value": "Running Extract",
+							"value": "Completed load to staging",
 							"type": "String"
 						},
 						"task": {
@@ -258,7 +185,7 @@
 							"type": "String"
 						},
 						"task_sequence": {
-							"value": "1",
+							"value": "2",
 							"type": "Int32"
 						},
 						"task_status": {
@@ -310,7 +237,7 @@
 							"type": "String"
 						},
 						"status_description": {
-							"value": "Running Extract",
+							"value": "Completed load to staging",
 							"type": "String"
 						},
 						"task": {
@@ -328,7 +255,7 @@
 							"type": "String"
 						},
 						"task_sequence": {
-							"value": "1",
+							"value": "2",
 							"type": "Int32"
 						},
 						"task_status": {
@@ -405,7 +332,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "extract_from_sqldb",
+						"activity": "load_staging_table",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -463,7 +390,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "extract_from_sqldb",
+						"activity": "load_staging_table",
 						"dependencyConditions": [
 							"Failed"
 						]
@@ -517,56 +444,11 @@
 				}
 			},
 			{
-				"name": "get_last_run_date",
-				"type": "Lookup",
-				"dependsOn": [
-					{
-						"activity": "update_control_table_to_running",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "AzureSqlSource",
-						"sqlReaderStoredProcedureName": "[control].[sp_get_last_run_date]",
-						"storedProcedureParameters": {
-							"job": {
-								"type": "String",
-								"value": "load_customer"
-							},
-							"task": {
-								"type": "String",
-								"value": {
-									"value": "@pipeline().Pipeline",
-									"type": "Expression"
-								}
-							}
-						},
-						"queryTimeout": "02:00:00",
-						"partitionOption": "None"
-					},
-					"dataset": {
-						"referenceName": "ds_generic_azure_sqldb",
-						"type": "DatasetReference"
-					}
-				}
-			},
-			{
-				"name": "update_last_run_date",
+				"name": "load_staging_table",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "update_control_table_to_success",
+						"activity": "get_task_parameters",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -581,22 +463,18 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[control].[sp_update_last_run_date]",
+					"storedProcedureName": "[SalesLT].[sp_load_stg]",
 					"storedProcedureParameters": {
-						"job": {
-							"value": "load_customer",
-							"type": "String"
-						},
-						"last_run_date": {
+						"filepath": {
 							"value": {
-								"value": "@pipeline().TriggerTime",
+								"value": "@activity('get_task_parameters').output.firstRow.src_path",
 								"type": "Expression"
 							},
-							"type": "DateTime"
+							"type": "String"
 						},
-						"task": {
+						"stgtablename": {
 							"value": {
-								"value": "@pipeline().Pipeline",
+								"value": "@activity('get_task_parameters').output.firstRow.tgt_stg_table",
 								"type": "Expression"
 							},
 							"type": "String"
