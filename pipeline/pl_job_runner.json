@@ -156,7 +156,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('get_tasks').output.task",
+						"value": "@activity('get_tasks').firstRow.task",
 						"type": "Expression"
 					},
 					"activities": [
