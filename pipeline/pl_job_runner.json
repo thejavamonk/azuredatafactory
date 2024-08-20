@@ -241,7 +241,7 @@
 											"value": "item().task_sequence",
 											"type": "Expression"
 										},
-										"type": "Int32"
+										"type": "Int64"
 									},
 									"task_status": {
 										"value": "SCHEDULED",
