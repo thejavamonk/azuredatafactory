@@ -373,6 +373,10 @@
 									"p_run_id": {
 										"value": "@variables('v_run_id')",
 										"type": "Expression"
+									},
+									"p_job": {
+										"value": "@pipeline().parameters.p_job",
+										"type": "Expression"
 									}
 								}
 							}
