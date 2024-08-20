@@ -105,7 +105,11 @@
 									]
 								}
 							],
-							"userProperties": []
+							"userProperties": [],
+							"typeProperties": {
+								"message": "FAILED",
+								"errorCode": "500"
+							}
 						}
 					],
 					"timeout": "0.12:00:00"
