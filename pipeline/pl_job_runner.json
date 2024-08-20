@@ -139,7 +139,8 @@
 					"dataset": {
 						"referenceName": "ds_generic_azure_sqldb",
 						"type": "DatasetReference"
-					}
+					},
+					"firstRowOnly": false
 				}
 			},
 			{
@@ -156,7 +157,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('get_tasks').firstRow.task",
+						"value": "@activity('get_tasks').output.value",
 						"type": "Expression"
 					},
 					"activities": [
