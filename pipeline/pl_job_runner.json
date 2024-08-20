@@ -238,7 +238,7 @@
 									},
 									"task_sequence": {
 										"value": {
-											"value": "item().task_sequence",
+											"value": "@int(item().task_sequence)",
 											"type": "Expression"
 										},
 										"type": "Int64"
