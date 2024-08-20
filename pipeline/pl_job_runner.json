@@ -241,7 +241,7 @@
 											"value": "@int(item().task_sequence)",
 											"type": "Expression"
 										},
-										"type": "Int64"
+										"type": "Int32"
 									},
 									"task_status": {
 										"value": "SCHEDULED",
