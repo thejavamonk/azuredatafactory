@@ -1,0 +1,14 @@
+{
+	"name": "pl_check_task_status",
+	"properties": {
+		"parameters": {
+			"p_run_id": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "framework"
+		},
+		"annotations": []
+	}
+}
