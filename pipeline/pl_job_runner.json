@@ -311,7 +311,7 @@
 							"typeProperties": {
 								"method": "POST",
 								"url": {
-									"value": "@concat('https://management.azure.com/subscriptions/',\nactivity('get_environment_parameters').output.firstRow.subscription,\n'/resourceGroups',\nactivity('get_environment_parameters').output.firstRow.rg,\n'/providers/Microsoft.DataFactory/factories/',\nactivity('get_environment_parameters').output.firstRow.adf,\n'/pipelines/',\nitem().task,\n'/createRun?api-version=2018-06-01'\n)",
+									"value": "@concat('https://management.azure.com/subscriptions/',\nactivity('get_environment_parameters').output.firstRow.subscription,\n'/resourceGroups/',\nactivity('get_environment_parameters').output.firstRow.rg,\n'/providers/Microsoft.DataFactory/factories/',\nactivity('get_environment_parameters').output.firstRow.adf,\n'/pipelines/',\nitem().task,\n'/createRun?api-version=2018-06-01'\n)",
 									"type": "Expression"
 								},
 								"body": {
