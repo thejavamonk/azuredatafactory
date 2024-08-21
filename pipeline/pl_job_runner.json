@@ -173,7 +173,7 @@
 							"typeProperties": {
 								"variableName": "v_task_log",
 								"value": {
-									"value": "@concat('Starting task', item().task)",
+									"value": "@concat('Starting task ', item().task)",
 									"type": "Expression"
 								}
 							}
