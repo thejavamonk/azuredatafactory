@@ -28,12 +28,15 @@
 						"storedProcedureParameters": {
 							"job": {
 								"type": "String",
-								"value": "load_customer"
+								"value": {
+									"value": "@pipeline().parameters.p_job",
+									"type": "Expression"
+								}
 							},
 							"job_id": {
 								"type": "String",
 								"value": {
-									"value": "@pipeline().RunId",
+									"value": "@pipeline().parameters.p_job_id",
 									"type": "Expression"
 								}
 							},
@@ -53,7 +56,10 @@
 							},
 							"task_sequence": {
 								"type": "Int32",
-								"value": "3"
+								"value": {
+									"value": "@pipeline().parameters.p_task_sequence",
+									"type": "Expression"
+								}
 							}
 						},
 						"queryTimeout": "02:00:00",
@@ -82,12 +88,15 @@
 					"storedProcedureName": "[control].[sp_job_task_log]",
 					"storedProcedureParameters": {
 						"job": {
-							"value": "load_customer",
+							"value": {
+								"value": "@pipeline().parameters.p_job",
+								"type": "Expression"
+							},
 							"type": "String"
 						},
 						"job_id": {
 							"value": {
-								"value": "@pipeline().RunId",
+								"value": "@pipeline().parameters.p_job_id",
 								"type": "Expression"
 							},
 							"type": "String"
@@ -97,7 +106,7 @@
 							"type": "String"
 						},
 						"status_description": {
-							"value": "Running load to staging task",
+							"value": "Running load to prod task",
 							"type": "String"
 						},
 						"task": {
@@ -115,11 +124,14 @@
 							"type": "String"
 						},
 						"task_sequence": {
-							"value": "3",
+							"value": {
+								"value": "@pipeline().parameters.p_task_sequence",
+								"type": "Expression"
+							},
 							"type": "Int32"
 						},
 						"task_status": {
-							"value": "Running",
+							"value": "RUNNING",
 							"type": "String"
 						}
 					}
@@ -152,12 +164,15 @@
 					"storedProcedureName": "[control].[sp_job_task_log]",
 					"storedProcedureParameters": {
 						"job": {
-							"value": "load_customer",
+							"value": {
+								"value": "@pipeline().parameters.p_job",
+								"type": "Expression"
+							},
 							"type": "String"
 						},
 						"job_id": {
 							"value": {
-								"value": "@pipeline().RunId",
+								"value": "@pipeline().parameters.p_job_id",
 								"type": "Expression"
 							},
 							"type": "String"
@@ -167,7 +182,7 @@
 							"type": "String"
 						},
 						"status_description": {
-							"value": "Completed load to staging",
+							"value": "Completed load to Prod",
 							"type": "String"
 						},
 						"task": {
@@ -185,11 +200,14 @@
 							"type": "String"
 						},
 						"task_sequence": {
-							"value": "3",
+							"value": {
+								"value": "@pipeline().parameters.p_task_sequence",
+								"type": "Expression"
+							},
 							"type": "Int32"
 						},
 						"task_status": {
-							"value": "Success",
+							"value": "SUCCESS",
 							"type": "String"
 						}
 					}
@@ -292,12 +310,15 @@
 					"storedProcedureName": "[control].[sp_update_job_control]",
 					"storedProcedureParameters": {
 						"job": {
-							"value": "load_customer",
+							"value": {
+								"value": "@pipeline().parameters.p_job",
+								"type": "Expression"
+							},
 							"type": "String"
 						},
 						"job_id": {
 							"value": {
-								"value": "@pipeline().RunId",
+								"value": "@pipeline().parameters.p_job_id",
 								"type": "Expression"
 							},
 							"type": "String"
@@ -317,7 +338,7 @@
 							"type": "String"
 						},
 						"task_status": {
-							"value": "Running",
+							"value": "RUNNING",
 							"type": "String"
 						}
 					}
@@ -350,12 +371,15 @@
 					"storedProcedureName": "[control].[sp_update_job_control]",
 					"storedProcedureParameters": {
 						"job": {
-							"value": "load_customer",
+							"value": {
+								"value": "@pipeline().parameters.p_job",
+								"type": "Expression"
+							},
 							"type": "String"
 						},
 						"job_id": {
 							"value": {
-								"value": "@pipeline().RunId",
+								"value": "@pipeline().parameters.p_job_id",
 								"type": "Expression"
 							},
 							"type": "String"
@@ -375,7 +399,7 @@
 							"type": "String"
 						},
 						"task_status": {
-							"value": "Success",
+							"value": "SUCCESS",
 							"type": "String"
 						}
 					}
@@ -408,12 +432,15 @@
 					"storedProcedureName": "[control].[sp_update_job_control]",
 					"storedProcedureParameters": {
 						"job": {
-							"value": "load_customer",
+							"value": {
+								"value": "@pipeline().parameters.p_job",
+								"type": "Expression"
+							},
 							"type": "String"
 						},
 						"job_id": {
 							"value": {
-								"value": "@pipeline().RunId",
+								"value": "@pipeline().parameters.p_job_id",
 								"type": "Expression"
 							},
 							"type": "String"
@@ -433,7 +460,7 @@
 							"type": "String"
 						},
 						"task_status": {
-							"value": "Failure",
+							"value": "FAILURE",
 							"type": "String"
 						}
 					}
@@ -474,6 +501,17 @@
 				}
 			}
 		],
+		"parameters": {
+			"p_job": {
+				"type": "string"
+			},
+			"p_job_id": {
+				"type": "string"
+			},
+			"p_task_sequence": {
+				"type": "string"
+			}
+		},
 		"folder": {
 			"name": "framework"
 		},
